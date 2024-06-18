@@ -6,11 +6,12 @@ phases:
       nodejs: 18
     commands:
       - echo Installing dependencies...
-      - npm install
+      - npm install -g yarn
+      - yarn install
   build:
     commands:
       - echo Building the project...
-      - npm run build --verbose
+      - yarn build
 artifacts:
   files:
     - "**/*"
