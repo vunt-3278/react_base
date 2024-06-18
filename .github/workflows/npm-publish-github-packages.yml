@@ -30,7 +30,7 @@ jobs:
           git remote add codecommit https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/demo-deploy
       - name: Fetch and rebase before push
         run: |
-          git fetch codecommit
+          git fetch codecommit ${{ secrets.GIT_BRANCH }}
           git rebase codecommit/${{ secrets.GIT_BRANCH }}
 
       - name: Sync to CodeCommit
