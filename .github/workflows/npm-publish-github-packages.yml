@@ -27,7 +27,7 @@ jobs:
 
       - name: remote git
         run: |
-          git remote add codecommit https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/demo-deploy
+          git remote add codecommit https://git-codecommit.${{ secrets.AWS_REGION }}.amazonaws.com/v1/repos/${{ secrets.AWS_REPO }}
       # - name: Fetch and rebase before push
       #   run: |
       #     git fetch codecommit ${{ secrets.GIT_BRANCH }}
