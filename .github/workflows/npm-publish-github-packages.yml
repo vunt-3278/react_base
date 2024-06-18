@@ -30,7 +30,7 @@ jobs:
       #      git remote add codecommit https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/demo-deploy
       - name: Create branch
         run: |
-          git checkout -b demo
+          git checkout -b ${{ secrets.GIT_BRANCH }}
       # - name: Fetch and rebase before push
       #   run: |
       #      git fetch codecommit demo
@@ -38,7 +38,7 @@ jobs:
 
       - name: Sync to CodeCommit
         run: |
-          git remote add codecommit https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/demo-deploy
+          git remote add codecommit https://git-codecommit.${{ secrets.AWS_REGION }}.amazonaws.com/v1/repos/${{ secrets.GIT_REPO }}
           git fetch codecommit
-          git rebase codecommit/demo
-          git push -u codecommit demo --force-with-lease
+          git rebase codecommit/${{ secrets.GIT_BRANCH }}
+          git push -u codecommit ${{ secrets.GIT_BRANCH }} --force-with-lease
