@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-           fetch-depth: 0
+          fetch-depth: 0
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -37,4 +37,4 @@ jobs:
 
       - name: Sync to CodeCommit
         run: |
-          git push -u codecommit ${{ secrets.GIT_BRANCH }} --force-with-lease
+          git push -u codecommit ${{ secrets.GIT_BRANCH }} --force
