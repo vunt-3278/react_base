@@ -16,6 +16,8 @@ phases:
   post_build:
     commands:
       - echo Zipping the build folder...
+      - cp configurations/appspec.yml build/
+      - mv scripts build/scripts
       - zip -r build.zip build
       - echo Uploading build.zip to S3....
       - aws s3 cp build.zip s3://demo-deploy01/deploy/
