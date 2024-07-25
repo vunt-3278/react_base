@@ -33,4 +33,6 @@ jobs:
 
       - name: Sync to CodeCommit
         run: |
+          git gc --prune=now
+          git fsck --full
           git push -u codecommit ${{ secrets.GIT_BRANCH }} --force
