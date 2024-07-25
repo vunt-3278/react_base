@@ -29,7 +29,7 @@ jobs:
 
       - name: remote git
         run: |
-          git remote add codecommit https://git-codecommit.${{ secrets.AWS_REGION }}.amazonaws.com/v1/repos/demo-deploy
+          git remote add codecommit https://git-codecommit.${{ secrets.AWS_REGION }}.amazonaws.com/v1/repos/${{ secrets.GIT_REPO }}
 
       - name: Sync to CodeCommit
         run: |
