@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -33,6 +33,4 @@ jobs:
 
       - name: Sync to CodeCommit
         run: |
-          # git gc --prune=now
-          # git fsck --full
           git push -u codecommit ${{ secrets.GIT_BRANCH }} --force
