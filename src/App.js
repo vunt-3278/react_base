@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import logo from "./logo.svg";
+import { hello } from "./config";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Hello world!!!
+          {hello}
         </a>
       </header>
     </div>

@@ -8,8 +8,8 @@
             "essential": true,
             "portMappings": [
                 {
-                    "containerPort": $CONTAINER_PORT,
-                    "hostPort": $HOST_PORT
+                    "containerPort": "$CONTAINER_PORT",
+                    "hostPort": "$HOST_PORT"
                 }
             ]
         }
@@ -18,7 +18,7 @@
         "FARGATE"
     ],
     "networkMode": "awsvpc",
-    "memory": $TASK_MEMORY,
-    "cpu": $TASK_CPU,
+    "memory": "$TASK_MEMORY",
+    "cpu": "$TASK_CPU",
     "family": "$TASK_FAMILY"
 }
