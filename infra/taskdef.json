@@ -1,0 +1,23 @@
+{
+    "executionRoleArn": "arn:aws:iam::$AWS_ACCOUNT_ID:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "name": "$CONTAINER_NAME",
+            "image": "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPOSITORY_URI:$IMAGE_TAG",
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": $CONTAINER_PORT,
+                    "hostPort": $HOST_PORT
+                }
+            ]
+        }
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "networkMode": "awsvpc",
+    "memory": $TASK_MEMORY,
+    "cpu": $TASK_CPU,
+    "family": $TASK_FAMILY
+}
