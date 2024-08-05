@@ -1,5 +1,6 @@
 {
-    "executionRoleArn": "arn:aws:iam::$AWS_ACCOUNT_ID:role/ecsTaskExecutionRole",
+    "executionRoleArn": "$executionRoleArn",
+    "taskRoleArn": "$taskRoleArn",
     "containerDefinitions": [
         {
             "name": "$CONTAINER_NAME",
@@ -19,5 +20,5 @@
     "networkMode": "awsvpc",
     "memory": $TASK_MEMORY,
     "cpu": $TASK_CPU,
-    "family": $TASK_FAMILY
+    "family": "$TASK_FAMILY"
 }
