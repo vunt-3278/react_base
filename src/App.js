@@ -1,9 +1,13 @@
 import React from "react";
 import "./App.css";
 import logo from "./logo.svg";
-import { hello } from "./config";
+// import { hello } from "./config";
+import dotenv from "dotenv";
+dotenv.config();
 
 function App() {
+  const hello = process.env.REACT_APP_HELLO;
+  console.log(process.env);
   return (
     <div className="App">
       <header className="App-header">

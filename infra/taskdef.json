@@ -11,14 +11,22 @@
                     "containerPort": $CONTAINER_PORT,
                     "hostPort": $HOST_PORT
                 }
-            ]
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "$awslogs_group",
+                    "awslogs-region": "$awslogs_region",
+                    "awslogs-stream-prefix": "$awslogs_stream_prefix"
+                }
+            }
         }
     ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
     "networkMode": "awsvpc",
-    "memory": $TASK_MEMORY,
-    "cpu": $TASK_CPU,
+    "memory": "$TASK_MEMORY",
+    "cpu": "$TASK_CPU",
     "family": "$TASK_FAMILY"
 }
