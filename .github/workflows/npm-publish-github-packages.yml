@@ -18,14 +18,14 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::423623843665:role/aillio-dev-oidc
-          role-session-name: aillio-dev-oidc
+          role-to-assume: arn:aws:iam::423623843665:role/aillio-dev-oidc-test
+          role-session-name: aillio-dev-oidc-test
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Install zip
         run: sudo apt-get install zip
       - name: zip code
         run: |
-            zip -r poster-ai-backend.zip .  
+          zip -r poster-ai-backend.zip .
       - name: Upload to S3
         run: aws s3 cp poster-ai-backend.zip s3://aillio-dev-source-code/demo/
       # - name: Configure Git to use AWS CodeCommit credential helper
