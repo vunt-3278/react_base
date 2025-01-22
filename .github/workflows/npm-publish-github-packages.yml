@@ -19,6 +19,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::423623843665:role/aillio-dev-oidc
+          role-session-name: aillio-dev-oidc
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Install zip
         run: sudo apt-get install zip
