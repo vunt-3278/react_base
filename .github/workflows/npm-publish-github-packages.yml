@@ -58,4 +58,4 @@ jobs:
           aws-region: us-east-1
       - name: Upload to S3
         run: |
-          aws s3 cp ${{ secrets.ZIP_FILE }} s3://${{ needs.configure-env.outputs.s3_source_code_path }}/
+          aws s3 cp ${{ secrets.ZIP_FILE }} s3://${{ secrets.PROD_S3_SOURCE_CODE_BATCH }}/
