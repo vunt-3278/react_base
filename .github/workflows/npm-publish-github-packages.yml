@@ -40,6 +40,8 @@ jobs:
     steps:
       - name: Print environment
         run: echo "Environment is ${{ needs.configure-env.outputs.environment }}"
+      - name: print s3 path
+        run: echo "S3 path is ${{ needs.configure-env.outputs.s3_source_code_path }}"
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install zip
