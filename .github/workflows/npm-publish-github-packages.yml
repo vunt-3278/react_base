@@ -67,20 +67,20 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 cp ${{ secrets.ZIP_FILE }} s3://${{ secrets.S3_SOURCE_CODE_PATH }}/
-      # - name: Report Status
-      #   if: failure()
-      #   uses: slackapi/slack-github-action@v1.25.0
-      #   with:
-      #     channel-id: "${{ secrets.SLACK_CHANNEL }}"
-      #     payload: |
-      #       {
-      #         "text": "<!channel>\nDeployment for Batch Failure :error:",
-      #         "attachments": [
-      #           {
-      #             "pretext": "ENV: ${{ needs.configure-env.outputs.environment }}\nRepository: ${{ github.repository }}\nGitHub Action uploads code to S3 result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-      #             "color": "ff0000"
-      #           }
-      #         ]
-      #       }
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+      - name: Report Status
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: "${{ secrets.SLACK_CHANNEL }}"
+          payload: |
+            {
+              "text": "<!channel>\nDeployment for Batch Failure :error:",
+              "attachments": [
+                {
+                  "pretext": "ENV: ${{ needs.configure-env.outputs.environment }}\nRepository: ${{ github.repository }}\nGitHub Action uploads code to S3 result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+                  "color": "ff0000"
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
