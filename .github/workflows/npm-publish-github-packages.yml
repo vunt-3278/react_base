@@ -1,42 +1,58 @@
-name: Sync to CodeCommit
-
+name: Upload source to S3
 on:
   push:
     branches:
+      - develop
+      - staging
       - main
 
 jobs:
-  sync:
+  configure-env:
     runs-on: ubuntu-latest
+    outputs:  
+      environment: ${{ steps.config.outputs.environment }}
+    steps:
+    - id: config
+      name: Config environment base on github branch
+      run: |
+        if [ "${{ github.ref_name }}" == "develop" ] ; then
+            echo "env=dev" >> "$GITHUB_OUTPUT"
+            echo "environment=develop" >> "$GITHUB_OUTPUT"
+            echo "s3_source_code_path=${{ secrets.DEV_S3_SOURCE_CODE_BATCH }}" >> "$GITHUB_OUTPUT"
+        elif [ "${{ github.ref_name }}" == "staging" ] ; then
+            echo "env=stg" >> "$GITHUB_OUTPUT"
+            echo "environment=staging" >> "$GITHUB_OUTPUT"
+            echo "s3_source_code_path=${{ secrets.STG_S3_SOURCE_CODE_BATCH }}" >> "$GITHUB_OUTPUT"
+        elif [ "${{ github.ref_name }}" == "main" ] ; then
+            echo "env=main" >> "$GITHUB_OUTPUT"
+            echo "environment=production" >> "$GITHUB_OUTPUT"
+            echo "s3_source_code_path=${{ secrets.PROD_S3_SOURCE_CODE_BATCH }}" >> "$GITHUB_OUTPUT"
+        else
+            echo "no flag"
+        fi
+  upload-to-s3:
+    runs-on: ubuntu-latest
+    needs: configure-env
+    environment:  ${{ needs.configure-env.outputs.environment }}
     permissions:
       id-token: write
       contents: read
     steps:
+      - name: Print environment
+        run: echo "Environment is ${{ needs.configure-env.outputs.environment }}"
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::423623843665:role/github_action_cicd_role
-          aws-region: ap-northeast-1
       - name: Install zip
         run: sudo apt-get install zip
       - name: zip code
         run: |
-          zip -r poster-ai-backend.zip .
+            zip -r secrets.ZIP_FILE . 
+      - name: Configure AWS to use OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
+          aws-region: us-east-1
       - name: Upload to S3
-        run: aws s3 cp poster-ai-backend.zip s3://aillio-dev-source-code/demo/
-      # - name: Configure Git to use AWS CodeCommit credential helper
-      #   run: |
-      #     git config --global credential.helper '!aws codecommit credential-helper $@'
-      #     git config --global credential.UseHttpPath true
-
-      # - name: remote git
-      #   run: |
-      #     git remote add codecommit https://git-codecommit.${{ secrets.AWS_REGION }}.amazonaws.com/v1/repos/${{ secrets.GIT_REPO }}
-
-      # - name: Sync to CodeCommit
-      #   run: |
-      #     git push -u codecommit ${{ secrets.GIT_BRANCH }} --force
+        run: |
+          cd backend
+          aws s3 cp ${{ secrets.ZIP_FILE }} s3://${{ needs.configure-env.outputs.s3_source_code_path }}/
