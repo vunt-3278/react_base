@@ -38,22 +38,22 @@ jobs:
         run: echo "Environment is ${{ needs.configure-env.outputs.environment }}"
       - name: Checkout code
         uses: actions/checkout@v4
-      # - id: slack
-      #   uses: slackapi/slack-github-action@v1.25.0
-      #   with:
-      #     channel-id: "${{ secrets.SLACK_CHANNEL }}"
-      #     payload: |
-      #       {
-      #         "text": "<!channel>\nDeployment for Batch started",
-      #         "attachments": [
-      #           {
-      #             "pretext": "ENV: ${{ needs.configure-env.outputs.environment }}\nRepository: ${{ github.repository }}\nGitHub Action uploads code to S3\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-      #             "color": "dbab09"
-      #           }
-      #         ]
-      #       }
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+      - id: slack
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: "${{ secrets.SLACK_CHANNEL }}"
+          payload: |
+            {
+              "text": "<!channel>\nDeployment for Batch started",
+              "attachments": [
+                {
+                  "pretext": "ENV: ${{ needs.configure-env.outputs.environment }}\nRepository: ${{ github.repository }}\nGitHub Action uploads code to S3\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+                  "color": "dbab09"
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
       - name: Install zip
         run: sudo apt-get install zip
       - name: zip code
