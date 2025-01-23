@@ -50,7 +50,7 @@ jobs:
         run: sudo apt-get install zip
       - name: zip code
         run: |
-            zip -r poster-backend.zip . 
+            zip -r poster-backend2.zip . 
       - name: Configure AWS to use OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -58,4 +58,4 @@ jobs:
           aws-region: us-east-1
       - name: Upload to S3
         run: |
-          aws s3 cp poster-backend.zip s3://aillio-prod-source-code/demo/
+          aws s3 cp poster-backend2.zip s3://${{ needs.configure-env.outputs.s3_source_code_path }}/
